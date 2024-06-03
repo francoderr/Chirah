@@ -59,6 +59,12 @@
             border-radius: 10px;
             background: #e3f2fd;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        .content-box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
         }
         .content-box h2 {
             margin-top: 0;
@@ -90,17 +96,14 @@
             <p>Your trusted partner in security management.</p>
         </div>
         <div class="content-section">
-            <div class="content-box">
-                <h2>About Us</h2>
-                <p>Learn more about our mission and values.</p>
+            <div class="content-box" onclick="location.href='report.html'">
+                <h2>Create Report</h2>
+                <p>Create a report about what's happening in your post</p>
+                <p>to be viewed by your superiors and colleagues</p>
             </div>
-            <div class="content-box">
-                <h2>Services</h2>
-                <p>Discover the range of services we offer.</p>
-            </div>
-            <div class="content-box">
-                <h2>Contact</h2>
-                <p>Get in touch with us for any queries or support.</p>
+            <div class="content-box" onclick="location.href='viewReports.html'">
+                <h2>View Reports</h2>
+                <p>Get updated on what your colleagues and superiors post</p>
             </div>
         </div>
     </div>

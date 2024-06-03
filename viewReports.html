@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>View Reports</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        position: relative;
+      }
+      h1 {
+        text-align: center;
+        color: #0d47a1;
+      }
+      .card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 20px;
+        background-color: #ffffff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .card h3 {
+        margin-top: 0;
+        color: #0d47a1;
+      }
+      .card p {
+        margin: 10px 0;
+      }
+      .back-btn {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+      }
+      .back-btn a {
+        background-color: #0d47a1;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+      }
+      .back-btn a:hover {
+        background-color: #08306b;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="back-btn">
+      <a href="homepage.html">Back to Homepage</a>
+    </div>
+    <div class="container">
+      <h1>View Reports</h1>
+
+      <div id="reportContainer">
+      </div>
+    </div>
+
+    <script>
+      window.addEventListener("load", function () {
+        fetchReports();
+      });
+
+      function fetchReports() {
+        fetch("http://localhost:5000/getReports")
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            if (data.Status === "Success") {
+              const reports = data.reports;
+              const reportContainer =
+                document.getElementById("reportContainer");
+              reports.forEach((report) => {
+                const card = `
+                            <div class="card">
+                                <h3>${report.title}</h3>
+                                <p><strong>Officer Name:</strong> ${report.name}</p>
+                                <p><strong>Assigned Post:</strong> ${report.post}</p>
+                                <p><strong>Date:</strong> ${report.date}</p>
+                                <p><strong>Details:</strong> ${report.content}</p>
+                            </div>
+                        `;
+                reportContainer.insertAdjacentHTML("beforeend", card);
+              });
+            } else {
+              throw new Error(data.message || "Unknown error occurred");
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            alert("An error occurred while fetching reports: " + error.message);
+          });
+      }
+    </script>
+  </body>
+</html>
