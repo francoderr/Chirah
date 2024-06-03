@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Login</title>
+    <style>
+      body {
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-image: url("./pics/security.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        font-family: Arial, sans-serif;
+      }
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+        padding: 30px;
+        border: 1px solid #90caf9;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        max-width: 400px;
+        width: 100%;
+      }
+      .container h1 {
+        margin: 0 0 10px;
+        font-size: 24px;
+        color: #0d47a1;
+        text-align: center;
+      }
+      .container p {
+        margin: 0 0 20px;
+        font-size: 18px;
+        color: #1976d2;
+        text-align: center;
+      }
+      .container label {
+        width: 100%;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #0d47a1;
+      }
+      .container input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #90caf9;
+        border-radius: 5px;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        font-size: 16px;
+      }
+      .container input:focus {
+        border-color: #42a5f5;
+        outline: none;
+        box-shadow: 0 0 5px rgba(66, 165, 245, 0.5);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>KIST ONLINE SECURITY MANAGEMENT SYSTEM</h1>
+      <p>LOGIN</p>
+      <form id="login-form">
+        <!-- Added onsubmit event -->
+        <label for="username">Email:</label>
+        <input type="text" id="username" name="username" />
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" />
+
+        <input type="submit" value="Login" />
+        <!-- Submit button -->
+      </form>
+    </div>
+    <script>
+      document
+        .getElementById("login-form")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          var username = document.getElementById("username").value;
+          var password = document.getElementById("password").value;
+
+          var body = JSON.stringify({
+            email: username,
+            password: password,
+          });
+          fetch("http://localhost:5000/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: body,
+          })
+            .then((response) => {
+              if (response.ok) {
+                return response.json();
+              } else {
+                throw new Error("Login failed.");
+              }
+            })
+            .then((data) => {
+              console.log(data);
+              window.location.href = "./homepage.html";
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
+        });
+    </script>
+  </body>
+</html>

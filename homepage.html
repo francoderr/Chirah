@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f3f4f6;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background-color: #0d47a1;
+            color: #fff;
+        }
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+        }
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .welcome-section h1 {
+            font-size: 32px;
+            color: #0d47a1;
+        }
+        .welcome-section p {
+            font-size: 18px;
+            color: #1976d2;
+        }
+        .content-section {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .content-box {
+            flex: 1;
+            margin: 10px;
+            padding: 20px;
+            border: 1px solid #90caf9;
+            border-radius: 10px;
+            background: #e3f2fd;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .content-box h2 {
+            margin-top: 0;
+            font-size: 24px;
+            color: #0d47a1;
+        }
+        .content-box p {
+            font-size: 16px;
+            color: #1976d2;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <a href="#">KIST</a>
+        </div>
+        <div class="nav-links">
+            <a href="./login.html">Logout</a>
+            <!-- <a href="#">About</a> -->
+            <!-- <a href="#">Services</a> -->
+            <!-- <a href="#">Contact</a> -->
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="welcome-section">
+            <h1>Welcome to KIST Online Security Management System</h1>
+            <p>Your trusted partner in security management.</p>
+        </div>
+        <div class="content-section">
+            <div class="content-box">
+                <h2>About Us</h2>
+                <p>Learn more about our mission and values.</p>
+            </div>
+            <div class="content-box">
+                <h2>Services</h2>
+                <p>Discover the range of services we offer.</p>
+            </div>
+            <div class="content-box">
+                <h2>Contact</h2>
+                <p>Get in touch with us for any queries or support.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
