@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Assign User to Post</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5; /* Light grey background */
+            color: #333; /* Darker text for better readability */
+        }
+
+        h2 {
+            color: #0d47a1; /* Theme color for heading */
+        }
+
+        label, select, button {
+            display: block;
+            margin-bottom: 10px; /* Space between elements */
+        }
+
+        button {
+            background-color: #0d47a1; /* Button background color */
+            color: white; /* White text on button */
+            border: none;
+            padding: 10px 20px; /* Padding around text inside button */
+            cursor: pointer;
+            transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+        }
+
+        button:hover {
+            background-color: #0056b3; /* Darker shade for hover effect */
+        }
+
+        form {
+            background-color: white; /* Form background */
+            padding: 20px; /* Padding around form contents */
+            border-radius: 8px; /* Rounded corners for form */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+        }
+
+        select {
+            width: 100%; /* Full width of its container */
+            padding: 10px; /* Padding around selected value */
+            border: 1px solid #ccc; /* Border around select element */
+            border-radius: 4px; /* Rounded corners for select element */
+        }
+    </style>
+</head>
+<body>
+    <h2>Assign User to Post</h2>
+
+    <form id="assignForm">
+      <label for="users">Select User:</label>
+      <select id="users" name="username"></select><br /><br />
+
+      <label for="posts">Select Post:</label>
+      <select id="posts" name="postId"></select><br /><br />
+
+      <button type="submit">Assign</button>
+    </form>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        fetchUsers();
+        fetchPosts();
+
+        document
+         .getElementById("assignForm")
+         .addEventListener("submit", function (event) {
+            event.preventDefault();
+            const selectedUserOption = document.getElementById("users").selectedOptions[0];
+            const username = selectedUserOption.text;
+            const userId = selectedUserOption.value.split("(")[1].slice(0, -1); // Extracting userId from combined string
+
+            const selectedPostOption = document.getElementById("posts").selectedOptions[0];
+            const postId = selectedPostOption.value;
+
+            if (username && userId && postId) {
+              assignUserToPost({ username, userId }, postId);
+            } else {
+              alert("Please select a user and a post.");
+            }
+          });
+      });
+
+      async function fetchUsers() {
+        const response = await fetch("http://localhost:5000/getUsers");
+        const data = await response.json();
+        if (data.Status === "Success") {
+          const usersDropdown = document.getElementById("users");
+          data.users.forEach((user) => {
+            const option = document.createElement("option");
+            option.value = `${user.username}(${user.id})`; // Combine username and ID
+            option.text = user.username; // Display only the username
+            usersDropdown.add(option);
+          });
+        }
+      }
+
+      async function fetchPosts() {
+        const response = await fetch("http://localhost:5000/getPosts");
+        const data = await response.json();
+        if (data.Status === "Success") {
+          const postsDropdown = document.getElementById("posts");
+          data.posts.forEach((post) => {
+            const option = document.createElement("option");
+            option.value = post.id;
+            option.text = post.name;
+            postsDropdown.add(option);
+          });
+        }
+      }
+
+      async function assignUserToPost(userDetails, postId) {
+        const { username, userId } = userDetails;
+        const response = await fetch("http://localhost:5000/assignPost", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username, userId, postId }),
+        });
+
+        const data = await response.json();
+        if (data.Status === "SUCCESS") {
+          alert("User assigned successfully!");
+        } else {
+          alert("Failed to assign user to post.");
+        }
+      }
+    </script>
+</body>
+</html>

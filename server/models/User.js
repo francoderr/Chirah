@@ -21,7 +21,7 @@ const UserSchema = new mongoose.Schema({
   },
   priviledge: {
     type: String,
-    default: "",
+    default: "user",
   },
 });
 

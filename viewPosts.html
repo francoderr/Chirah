@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>View Posts</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+        color: #333;
+        line-height: 1.6;
+        padding-top: 100px;
+      }
+
+      .post-container {
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin-bottom: 20px;
+        margin-left: 100px;
+        margin-right: 100px;
+        transition: transform 0.3s ease-in-out;
+      }
+
+      .post-container:hover {
+        transform: translateY(-5px);
+      }
+
+      .post-title {
+        font-size: 24px;
+        font-weight: bold;
+        color: #0d47a1;
+        margin-bottom: 10px;
+      }
+
+      .post-description {
+        font-size: 16px;
+        color: #666;
+        margin-bottom: 15px;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+      .back-btn {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+      }
+      .back-btn a {
+        background-color: #0d47a1;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+      }
+      .back-btn a:hover {
+        background-color: #08306b;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="back-btn">
+      <a href="AdminHomepage.html">Back to Homepage</a>
+    </div>
+
+    <div id="postsContainer"></div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        fetch("http://localhost:5000/getPosts") 
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.Status === "Success") {
+              const postsContainer = document.getElementById("postsContainer");
+              data.posts.forEach((post) => {
+                const postDiv = document.createElement("div");
+                postDiv.classList.add("post-container");
+
+                const title = document.createElement("h3");
+                title.textContent = post.name;
+                title.classList.add("post-title");
+                postDiv.appendChild(title);
+
+                const description = document.createElement("p");
+                description.textContent = post.description;
+                description.classList.add("post-description");
+                postDiv.appendChild(description);
+
+                postsContainer.appendChild(postDiv);
+              });
+            } else {
+              console.error("Failed to fetch posts");
+            }
+          })
+          .catch((error) => console.error("Error fetching posts:", error));
+      });
+    </script>
+  </body>
+</html>

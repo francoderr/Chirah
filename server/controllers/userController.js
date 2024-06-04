@@ -56,3 +56,61 @@ export const login = async (req, res) => {
         res.status(500).send('Server error');
     }
 }
+
+export const adminLogin = async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        // Check if the user exists
+        let user = await UserModel.findOne({ email });
+        if (!user) {
+            return res.status(400).json({ msg: 'Invalid credentials' });
+        }
+
+        // Check the password
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ msg: 'Invalid credentials' });
+        }
+
+        //check if is admin
+        if(user.priviledge !== 'admin') {
+            return res.status(400).json({ msg: 'You are not an Admin!' });
+        }
+
+        // Respond with success message
+        res.status(200).json({ msg: 'Admin Login successful' });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+}
+
+
+export const getUsers = async (req, res) => {
+    try {
+      const users = await UserModel.aggregate([
+        {
+          $match: {},
+        },
+        {
+          $project: {
+            id: "$_id",
+            _id: 0,
+            username: 1,
+            email: 1,
+            date: 1,
+          },
+        },
+      ]);
+  
+      return res.status(200).json({
+        Status: "Success",
+        message: "Fetched Users!",
+        users,
+      });
+    } catch (error) {
+      res.status(409).json({ message: error.message });
+    }
+  };
+  
