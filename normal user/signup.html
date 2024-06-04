@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Login</title>
+    <title>Sign Up</title>
     <style>
       body {
         margin: 0;
@@ -9,7 +9,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background-image: url("./pics/security.jpg");
+        background-image: url("../pics/security.jpg");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -29,7 +29,7 @@
         width: 100%;
       }
       .container h1 {
-        margin: 0 0 10px;
+        margin: 0 0 20px;
         font-size: 24px;
         color: #0d47a1;
         text-align: center;
@@ -60,37 +60,65 @@
         outline: none;
         box-shadow: 0 0 5px rgba(66, 165, 245, 0.5);
       }
+      .container button {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: #0d47a1;
+        color: #fff;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      .container button:hover {
+        background-color: #1565c0;
+      }
     </style>
   </head>
   <body>
     <div class="container">
       <h1>KIST ONLINE SECURITY MANAGEMENT SYSTEM</h1>
-      <p>LOGIN</p>
-      <form id="login-form">
-        <!-- Added onsubmit event -->
-        <label for="username">Email:</label>
-        <input type="text" id="username" name="username" />
-
+      <p>SIGN UP</p>
+      <form id="signup-form">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required />
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required />
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password" />
-
-        <input type="submit" value="Login" />
-        <!-- Submit button -->
+        <input type="password" id="password" name="password" required />
+        <label for="confirm-password">Confirm Password:</label>
+        <input
+          type="password"
+          id="confirm-password"
+          name="confirm-password"
+          required
+        />
+        <input type="submit" value="Signup" />
       </form>
     </div>
     <script>
       document
-        .getElementById("login-form")
+        .getElementById("signup-form")
         .addEventListener("submit", function (event) {
           event.preventDefault();
           var username = document.getElementById("username").value;
+          var email = document.getElementById("email").value;
           var password = document.getElementById("password").value;
+          var confirmPassword =
+            document.getElementById("confirm-password").value;
+
+          if (password !== confirmPassword) {
+            alert("Passwords do not match");
+            return;
+          }
 
           var body = JSON.stringify({
-            email: username,
+            username: username,
+            email: email,
             password: password,
           });
-          fetch("http://localhost:5000/adminLogin", {
+          fetch("http://localhost:5000/signup", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -101,13 +129,12 @@
               if (response.ok) {
                 return response.json();
               } else {
-                alert("Login Failed")
-                throw new Error("Login failed.");
+                throw new Error("Signup failed.");
               }
             })
             .then((data) => {
               console.log(data);
-              window.location.href = "./AdminHomepage.html";
+              window.location.href = "./login.html";
             })
             .catch((error) => {
               console.error("Error:", error);
